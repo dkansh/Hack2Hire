@@ -6,9 +6,9 @@ pipelines:
     - step:
         name: Build
         script:
-          - cd app && zip -r ../myapp.zip *
+          - cd app && zip -r ../pharmacy-app.zip *
         artifacts:
-          - myapp.zip
+          - pharmacy-app.zip
 
     - step:
         name: Upload to S3
@@ -23,7 +23,7 @@ pipelines:
               AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
               COMMAND: 'upload'
               APPLICATION_NAME: ${APPLICATION_NAME}
-              ZIP_FILE: 'myapp.zip'
+              ZIP_FILE: 'pharmacy-app.zip'
 
     - step:
         name: Deploy with CodeDeploy
