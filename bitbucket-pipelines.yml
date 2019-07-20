@@ -1,26 +1,44 @@
-image: node:10.15.1
+image: atlassian/default-image:2
+
 
 pipelines:
   default:
     - step:
-        name: Build and Test
+        name: Build
         script:
-          - cd app && zip -r ../pharmacy-app.zip *
+          - cd app && zip -r ../myapp.zip *
         artifacts:
-          - pharmacy-app.zip
+          - myapp.zip
+
     - step:
-        name: Deploy
-        deployment: production
+        name: Upload to S3
+        services:
+          - docker
         script:
-          - pipe: atlassian/aws-s3-deploy:0.2.1
+          # Test upload
+          - pipe: atlassian/aws-code-deploy:0.2.3
             variables:
-              AWS_ACCESS_KEY_ID: $AWS_ACCESS_KEY_ID
-              AWS_SECRET_ACCESS_KEY: $AWS_SECRET_ACCESS_KEY
-              AWS_DEFAULT_REGION: "AWS_DEFAULT_REGION"
-              S3_BUCKET: "dbsmedapp"
-              LOCAL_PATH: "dist"
-              ACL: "public-read"
-              CACHE_CONTROL: "max-age=3600"
-              EXPIRES: "2018-10-01T00:00:00+00:00"
-              DELETE_FLAG: "true"
-              EXTRA_ARGS: "--follow-symlinks"
+              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+              AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+              COMMAND: 'upload'
+              APPLICATION_NAME: ${APPLICATION_NAME}
+              ZIP_FILE: 'myapp.zip'
+
+    - step:
+        name: Deploy with CodeDeploy
+        services:
+          - docker
+        script:
+          # Test upload
+          - pipe: atlassian/aws-code-deploy:0.2.3
+            variables:
+              AWS_ACCESS_KEY_ID: ${AWS_ACCESS_KEY_ID}
+              AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
+              AWS_DEFAULT_REGION: ${AWS_DEFAULT_REGION}
+              COMMAND: 'deploy'
+              APPLICATION_NAME: ${APPLICATION_NAME}
+              DEPLOYMENT_GROUP: ${DEPLOYMENT_GROUP}
+              IGNORE_APPLICATION_STOP_FAILURES: 'true'
+              FILE_EXISTS_BEHAVIOR: 'OVERWRITE'
+              WAIT: 'true'
