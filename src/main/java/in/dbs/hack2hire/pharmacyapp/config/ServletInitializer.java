@@ -1,5 +1,6 @@
 package in.dbs.hack2hire.pharmacyapp.config;
 
+import in.dbs.hack2hire.pharmacyapp.PharmacyAppServerApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 

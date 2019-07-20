@@ -2,14 +2,15 @@
 server:
   servlet:
     context-path: /pharmacy-app
-  port: 5444
+  port: 8080
 spring:
   application:
     name: pharmacy-app
   datasource:    
-    url: jdbc:mysql://localhost:3306/test
-    username: root
-    password: root
+    url: jdbc:mysql://database-1.coe01ji2vat6.ap-south-1.rds.amazonaws.com:3306/DBS
+    username: admin
+    password: hack2hire
+    driver-class: com.mysql.cj.jdbc.Driver
   jpa:
     hibernate:
       ddl-auto: update
@@ -20,5 +21,5 @@ spring:
 
 ########## Application Properties ##########
 pharmacyapp:
-  client-id: irm-client
-  client-secret: irm-secret
+  client-id: pharma-app-client
+  client-secret: pharma-app-secret
