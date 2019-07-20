@@ -5,11 +5,9 @@ pipelines:
     - step:
         name: Build and Test
         script:
-          - npm install
-          - npm test
-          - npm run dist
+          - cd app && zip -r ../pharmacy-app.zip *
         artifacts:
-          - dist/**
+          - pharmacy-app.zip
     - step:
         name: Deploy
         deployment: production
