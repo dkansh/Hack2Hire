@@ -12,8 +12,7 @@ pipelines:
           - maven
         script: # Modify the commands below to build your repository.
           - mvn -B verify # -B batch mode makes Maven less verbose
-          - mvn clean package
-          - mvn clena install
+          - mvn clean install
           - mvn test
           - mvn deploy
           
