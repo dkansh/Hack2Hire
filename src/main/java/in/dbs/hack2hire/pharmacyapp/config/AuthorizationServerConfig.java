@@ -28,7 +28,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 	private final String TRUST = "trust";
 	private final int ACCESS_TOKEN_VALIDITY_SECONDS = 60 * 60;
 	private final int FREFRESH_TOKEN_VALIDITY_SECONDS = 30 * 24 * 60 * 60;
-	
 
 	@Autowired
 	private TokenStore tokenStore;
@@ -38,10 +37,14 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
 
 	@Override
 	public void configure(ClientDetailsServiceConfigurer configurer) throws Exception {
-		configurer.inMemory().withClient(CLIENT_ID).secret(new BCryptPasswordEncoder().encode(CLIENT_SECRET))
-				.authorizedGrantTypes(GRANT_TYPE, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
-				.scopes(SCOPE_READ, SCOPE_WRITE, TRUST).accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
-				.refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
+		configurer
+		.inMemory()
+		.withClient(CLIENT_ID)
+		.secret(new BCryptPasswordEncoder()
+		.encode(CLIENT_SECRET))
+		.authorizedGrantTypes(GRANT_TYPE, AUTHORIZATION_CODE, REFRESH_TOKEN, IMPLICIT)
+		.scopes(SCOPE_READ, SCOPE_WRITE, TRUST).accessTokenValiditySeconds(ACCESS_TOKEN_VALIDITY_SECONDS)
+		.refreshTokenValiditySeconds(FREFRESH_TOKEN_VALIDITY_SECONDS);
 	}
 
 	@Override

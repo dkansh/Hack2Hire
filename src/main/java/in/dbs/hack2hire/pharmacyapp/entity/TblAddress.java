@@ -1,10 +1,14 @@
 package in.dbs.hack2hire.pharmacyapp.entity;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
+import in.dbs.hack2hire.pharmacyapp.vo.AddressVO;
+
 @Data
+@NoArgsConstructor
 @Entity
 @Table (name = "TBL_ADDRESS")
 public class TblAddress {
@@ -12,13 +16,12 @@ public class TblAddress {
     @Column(name = "ID")
     @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
-
-    @ManyToOne (fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn (name = "USER")
-    private UserEntity user;
+    
+    @Column(name = "USER_ID")
+    private Long userId;
 
     @Column (name = "DEFAULT_ADDR", columnDefinition = "tinyint default 0")
-    private boolean defaultAddress;
+    private Boolean defaultAddress;
 
     @Column (name = "ADDRESS_LINE1")
     private String addressLine1;
@@ -49,4 +52,20 @@ public class TblAddress {
 
     @Column (name = "LANGITUDE", columnDefinition="Decimal(10,8) default NULL")
     private Double longitude;
+    
+    public TblAddress(AddressVO addressVO) {
+    	this.id = addressVO.getId();
+    	this.userId = addressVO.getUserId();
+		this.defaultAddress = addressVO.getDefaultAddress();
+		this.addressLine1 = addressVO.getAddressLine1();
+		this.addressLine2 = addressVO.getAddressLine2();
+		this.addressLine3 = addressVO.getAddressLine3();
+		this.city = addressVO.getCity();
+		this.state = addressVO.getState();
+		this.country = addressVO.getCountry();
+		this.zipcode = addressVO.getZipcode();
+		this.landmark = addressVO.getLandmark();
+		this.latitude = addressVO.getLatitude();
+		this.longitude = addressVO.getLongitude();
+    }
 }

@@ -1,5 +1,6 @@
 package in.dbs.hack2hire.pharmacyapp.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -14,64 +15,60 @@ import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-import in.dbs.hack2hire.pharmacyapp.vo.UserVO;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import in.dbs.hack2hire.pharmacyapp.vo.UserRoleVO;
+import in.dbs.hack2hire.pharmacyapp.vo.UserVO;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
 @Entity
-@Table(name = "USER")
+@Table(name = "TBL_USER_INFO")
 @SequenceGenerator(name = "user_seq", sequenceName = "USER_SEQ")
 public class UserEntity {
 	@Id
 	@Column(name = "USER_ID")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "user_seq")
-	private Integer userId;
-	@Column(name = "USER_NAME")
-	private String userName;
+	private Long userId;
+
+	@Column(name = "FIRST_NAME")
+	private String firstName;
+
+	@Column(name = "LAST_NAME")
+	private String lastName;
+
+	@Column(name = "MOBILE_NUMBER")
+	private String mobileNumber;
+
+	@Column(name = "EMAIL_ID")
+	private String emaild;
+
+	@Column(name = "PASSWORD")
 	private String password;
+
 	@ManyToMany(cascade = { CascadeType.ALL })
-	@JoinTable(name = "USER_ROLES", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
+	@JoinTable(name = "TBL_USER_ROLES", joinColumns = { @JoinColumn(name = "USER_ID") }, inverseJoinColumns = {
 			@JoinColumn(name = "ROLE_ID") })
 	private Set<UserRoleEntity> userRoles;
 
-	public UserEntity() {
-	}
-
 	public UserEntity(UserVO userVO) {
-		if(userVO != null){
+		if (userVO != null) {
 			this.userId = userVO.getUserId();
-			this.userName = userVO.getUserName();
-			this.password = userVO.getPassword();
+			this.firstName = userVO.getFirstName();
+			this.lastName = userVO.getLastName();
+			this.mobileNumber = userVO.getMobileNumber();
+			this.emaild = userVO.getEmaild();
+			this.password = new BCryptPasswordEncoder().encode(userVO.getPassword());
+
+			if (userVO.getUserRoles() != null && userVO.getUserRoles().size() > 0) {
+				this.userRoles = new HashSet<UserRoleEntity>();
+				for (UserRoleVO roleVO : userVO.getUserRoles()) {
+					this.userRoles.add(new UserRoleEntity(roleVO));
+				}
+			}
 		}
 	}
 
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<UserRoleEntity> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(Set<UserRoleEntity> userRoles) {
-		this.userRoles = userRoles;
-	}
 }

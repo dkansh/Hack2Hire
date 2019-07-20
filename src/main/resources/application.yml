@@ -8,9 +8,23 @@ spring:
     name: pharmacy-app
   datasource:    
     url: jdbc:mysql://database-1.coe01ji2vat6.ap-south-1.rds.amazonaws.com:3306/DBS
-    username: admin
-    password: hack2hire
+    username: XXXXX
+    password: XXXXX
     driver-class: com.mysql.cj.jdbc.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: XXXXX
+    password: XXXXX
+    properties:      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          timeout=: 5000
+          writetimeout:  5000
+          starttls:
+            enable: true
+      
   jpa:
     hibernate:
       ddl-auto: update

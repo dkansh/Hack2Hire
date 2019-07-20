@@ -7,6 +7,6 @@ import in.dbs.hack2hire.pharmacyapp.entity.UserEntity;
 
 public interface UserRepository extends JpaRepository<UserEntity, Integer>{
 
-	public UserEntity findByUserName(@Param("userName") String userName);
+	public UserEntity findByMobileNumber(@Param("mobileNumber") String mobileNumber);
 
 }

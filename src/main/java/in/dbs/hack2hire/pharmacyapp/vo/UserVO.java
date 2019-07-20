@@ -1,65 +1,42 @@
 package in.dbs.hack2hire.pharmacyapp.vo;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import in.dbs.hack2hire.pharmacyapp.entity.UserEntity;
 import in.dbs.hack2hire.pharmacyapp.entity.UserRoleEntity;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Data
+@NoArgsConstructor
 public class UserVO {
-	private Integer userId;
+	private Long userId;
 	private String userName;
-	@JsonIgnore
+	private String firstName;
+	private String lastName;
+	private String mobileNumber;
+	private String emaild;
 	private String password;
-	private List<String> userRoles;
-
-	public UserVO() {
-	}
+	private List<UserRoleVO> userRoles;
+	private AddressVO addressVO;
+	private RetailInfoVO retailInfoVO;
 
 	public UserVO(UserEntity userEntity) {
 		if (userEntity != null) {
 			this.userId = userEntity.getUserId();
-			this.userName = userEntity.getUserName();
+			this.firstName = userEntity.getFirstName();
+			this.lastName = userEntity.getLastName();
+			this.mobileNumber = userEntity.getMobileNumber();
+			this.emaild = userEntity.getEmaild();
 			this.password = userEntity.getPassword();
-			Set<UserRoleEntity> roleEntities = userEntity.getUserRoles();
-			if (roleEntities != null && roleEntities.size() > 0) {
-				this.userRoles = roleEntities.stream().map(UserRoleEntity::getRoleName).collect(Collectors.toList());
+
+			if (userEntity.getUserRoles() != null && userEntity.getUserRoles().size() > 0) {
+				this.userRoles = new ArrayList<UserRoleVO>();
+				for (UserRoleEntity roleEntity : userEntity.getUserRoles()) {
+					this.userRoles.add(new UserRoleVO(roleEntity));
+				}
 			}
 		}
-	}
-
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public List<String> getUserRoles() {
-		return userRoles;
-	}
-
-	public void setUserRoles(List<String> userRoles) {
-		this.userRoles = userRoles;
 	}
 }
